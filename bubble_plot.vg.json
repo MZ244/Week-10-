@@ -4,7 +4,7 @@
     "height": 400,
     "title": "Population vs Area",
     "data": {
-      "url": "https://raw.githubusercontent.com/MZ244/Week-10/refs/heads/main/countries%20of%20the%20world.csv",
+      "url": "https://raw.githubusercontent.com/MZ244/Week-10-/refs/heads/main/countries%20of%20the%20world.csv",
       "format": {"type": "csv"}
     },
     "transform": [
