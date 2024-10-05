@@ -1,0 +1,97 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 600,
+    "height": 400,
+    "title": "Population vs Area",
+    "data": {
+      "url": "https://raw.githubusercontent.com/MZ244/Week-10/refs/heads/main/countries%20of%20the%20world.csv",
+      "format": {"type": "csv"}
+    },
+    "transform": [
+      {"calculate": "replace(datum['Population'], ',', '')", "as": "PopulationClean"},
+      {"calculate": "replace(datum['Area (sq. mi.)'], ',', '')", "as": "AreaClean"},
+      {"calculate": "toNumber(datum['PopulationClean'])", "as": "PopulationClean"},
+      {"calculate": "toNumber(datum['AreaClean'])", "as": "AreaClean"},
+      {"filter": "datum['PopulationClean'] > 0 && datum['AreaClean'] > 0"},
+      {"filter": "datum['AreaClean'] >= 1000 && datum['AreaClean'] <= AreaFilter"}
+    ],
+    "params": [
+      {
+        "name": "AreaFilter",
+        "value": 1201000,  
+        "bind": {
+          "input": "range",
+          "min": 1000,  
+          "max": 18000000,
+          "step": 100000,
+          "name": "Area Filter"
+        }
+      }
+    ],
+    "layer": [
+      {
+        "mark": {
+          "type": "circle",
+          "tooltip": true
+        },
+        "encoding": {
+          "x": {
+            "field": "AreaClean",
+            "type": "quantitative",
+            "title": "Area (sq. mi.)",
+            "axis": {"grid": true}
+          },
+          "y": {
+            "field": "PopulationClean",
+            "type": "quantitative",
+            "title": "Population",
+            "axis": {"grid": true}
+          },
+          "color": {
+            "field": "Region",
+            "type": "nominal",
+            "legend": {"title": "Region"}
+          },
+          "size": {
+            "field": "PopulationClean",
+            "type": "quantitative",
+            "scale": {"range": [10, 1000]},
+            "legend": {"title": "Population Size"}
+          },
+          "tooltip": [
+            {"field": "Country", "type": "nominal", "title": "Country"},
+            {"field": "PopulationClean", "type": "quantitative", "title": "Population"},
+            {"field": "AreaClean", "type": "quantitative", "title": "Area (sq. mi.)"}
+          ]
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "dy": -10,
+          "align": "center",
+          "fontSize": 10,
+          "fontWeight": "bold",
+          "color": "black"
+        },
+        "transform": [
+          {"filter": "datum['PopulationClean'] > 100000000 || datum['AreaClean'] > 500000"}
+        ],
+        "encoding": {
+          "x": {
+            "field": "AreaClean",
+            "type": "quantitative"
+          },
+          "y": {
+            "field": "PopulationClean",
+            "type": "quantitative"
+          },
+          "text": {
+            "field": "Country",
+            "type": "nominal"
+          }
+        }
+      }
+    ]
+  }
+  
